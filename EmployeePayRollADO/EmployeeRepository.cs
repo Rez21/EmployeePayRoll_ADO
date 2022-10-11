@@ -11,7 +11,7 @@ namespace EmployeePayRollADO
     public class EmployeeRepository
     {
         public static string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=PayrollService;trusted_connection=true";
-            
+
         public static void GetAllEmployees()
         {
             SqlConnection connection = null;
@@ -27,7 +27,7 @@ namespace EmployeePayRollADO
                 {
                     while (reader.Read())
                     {
-                        model.EmployeeID = Convert.ToInt32(reader["EmployeeID"] == DBNull.Value ? default : reader["EmployeeID"]); 
+                        model.EmployeeID = Convert.ToInt32(reader["EmployeeID"] == DBNull.Value ? default : reader["EmployeeID"]);
                         model.Name = reader["Name"] == DBNull.Value ? default : reader["Name"].ToString();
                         model.Salary = Convert.ToDouble(reader["Salary"] == DBNull.Value ? default : reader["Salary"]);
                         model.StartDate = (DateTime)((reader["StartDate"] == DBNull.Value ? default(DateTime) : reader["StartDate"]));
@@ -40,16 +40,16 @@ namespace EmployeePayRollADO
                         model.IncomeTax = Convert.ToDouble(reader["IncomeTax"] == DBNull.Value ? default : reader["IncomeTax"]);
                         model.Deductions = Convert.ToDouble(reader["Deductions"] == DBNull.Value ? default : reader["Deductions"]);
 
-                        Console.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7}",model.EmployeeID,model.Name,model.Salary,model.Gender,model.Phone,model.Address,model.Department,model.StartDate);
+                        Console.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7}", model.EmployeeID, model.Name, model.Salary, model.Gender, model.Phone, model.Address, model.Department, model.StartDate);
 
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            finally 
+            finally
             {
                 connection.Close();
             }
@@ -65,15 +65,15 @@ namespace EmployeePayRollADO
                 connection.Open();
                 command.Parameters.AddWithValue("@Name", model.Name);
                 command.Parameters.AddWithValue("@Salary", model.Salary);
-                command.Parameters.AddWithValue("@Address",model.Address);
-                command.Parameters.AddWithValue("@Phone",model.Phone);
+                command.Parameters.AddWithValue("@Address", model.Address);
+                command.Parameters.AddWithValue("@Phone", model.Phone);
                 int num = command.ExecuteNonQuery();
                 if (num != 0)
                     Console.WriteLine("Employee Added Successfully");
                 else
                     Console.WriteLine("Something went wrong!!!!!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -81,6 +81,33 @@ namespace EmployeePayRollADO
             {
                 connection.Close();
             }
-        }    
+        }
+        public static void UpdateEmployee(EmployeePayRoll model)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                SqlCommand command = new SqlCommand("dbo.spUpdateEmployee", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                connection.Open();
+                command.Parameters.AddWithValue("@Name", model.Name);
+                command.Parameters.AddWithValue("@Salary", model.Salary);
+                command.Parameters.AddWithValue("@ID", model.EmployeeID);
+                int num = command.ExecuteNonQuery();
+                if (num != 0)
+                    Console.WriteLine("Employee Updated Successfully");
+                else
+                    Console.WriteLine("Something went wrong!!!!!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }
