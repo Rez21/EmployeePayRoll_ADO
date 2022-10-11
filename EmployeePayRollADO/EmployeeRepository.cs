@@ -109,5 +109,32 @@ namespace EmployeePayRollADO
                 connection.Close();
             }
         }
+        public static void DeleteEmployee(EmployeePayRoll model)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                SqlCommand command = new SqlCommand("dbo.spDeleteEmployee", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                connection.Open();
+                command.Parameters.AddWithValue("@Name", model.Name);
+                command.Parameters.AddWithValue("@ID", model.EmployeeID);
+                int num = command.ExecuteNonQuery();
+                if (num != 0)
+                    Console.WriteLine("Employee Deleted Successfully");
+                else
+                    Console.WriteLine("Something went wrong!!!!!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
+}
 }

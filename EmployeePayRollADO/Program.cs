@@ -14,13 +14,20 @@
             //EmployeeRepository.AddEmployee(model);
 
             //--------Update Eployee----------
+            //EmployeePayRoll model = new EmployeePayRoll()
+            //{
+            //    Name = "Shakti",
+            //    EmployeeID=2, 
+            //   Salary = 65402.00
+            //};
+            //EmployeeRepository.UpdateEmployee(model);
             EmployeePayRoll model = new EmployeePayRoll()
             {
                 Name = "Shakti",
-                EmployeeID=2, 
-               Salary = 65402.00
+                EmployeeID = 2,
+              
             };
-            EmployeeRepository.UpdateEmployee(model);
+            EmployeeRepository.DeleteEmployee(model);
             EmployeeRepository.GetAllEmployees();
             Console.ReadLine();
         }
